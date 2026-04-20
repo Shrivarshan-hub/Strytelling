@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusLens</title>
+    <!-- Native UI font families -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Chart.js inclusion for Analysis visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">FocusLens</div>
+            <nav class="nav-links">
+                <button class="nav-btn active" onclick="switchTab('camera', event)">Camera</button>
+                <button class="nav-btn" onclick="switchTab('analysis', event)">Analysis</button>
+                <button class="nav-btn" onclick="switchTab('history', event)">History</button>
+            </nav>
+        </aside>
+
+        <!-- Right Content Body -->
+        <main class="main-content">
+            
+            <!-- Camera Interface -->
+            <section id="camera-tab" class="tab-content active">
+                <div class="card">
+                    <h2>Camera Tracking</h2>
+                    <p class="subtitle">System assumes tracking runs externally seamlessly in the background.</p>
+                    <div class="controls">
+                        <button id="start-btn" class="btn primary" onclick="startTracking()">Start Tracking</button>
+                        <button id="stop-btn" class="btn secondary" onclick="stopTracking()" disabled>Stop Tracking</button>
+                    </div>
+                    <div class="status-box">
+                        <span id="status-indicator" class="indicator inactive"></span>
+                        <span id="status-text">Ready</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Native Analysis Interface -->
+            <section id="analysis-tab" class="tab-content" style="display: none;">
+                <div class="header">
+                    <h2>Current Session Analysis</h2>
+                    <p class="subtitle">Live metrics isolating solely the current active session state dynamically.</p>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Focus Score</div>
+                        <div class="metric-value" id="live-score">0%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Focus Time</div>
+                        <div class="metric-value" id="live-focus">0m 0s</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Distraction Time</div>
+                        <div class="metric-value" id="live-distract">0m 0s</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Absence Time</div>
+                        <div class="metric-value" id="live-absent">0m 0s</div>
+                    </div>
+                </div>
+
+                <!-- ADDED CHARTS SECTION -->
+                <div class="charts-container" style="margin-top: 2rem; display: flex; gap: 2rem;">
+                    <div class="chart-box" style="flex: 1; border: 1px solid var(--border-light); border-radius: 8px; padding: 1.5rem; background: #fff;">
+                        <h3 class="metric-title" style="margin-bottom: 1rem; color: #111827;">Focus Distribution</h3>
+                        <div style="height: 250px; display: flex; justify-content: center;">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-box" style="flex: 1; border: 1px solid var(--border-light); border-radius: 8px; padding: 1.5rem; background: #fff;">
+                        <h3 class="metric-title" style="margin-bottom: 1rem; color: #111827;">Top Applications Used</h3>
+                        <div style="height: 250px;">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Archival Interface -->
+            <section id="history-tab" class="tab-content" style="display: none;">
+                <div class="header history-header">
+                    <div>
+                        <h2>Session History</h2>
+                        <p class="subtitle">Permanent records aggregating completed behavioral tracking sessions globally.</p>
+                    </div>
+                    <a href="/download_csv" class="btn secondary">Download All CSV</a>
+                </div>
+                
+                <div class="table-container">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Focus Score</th>
+                                <th>Focus Time</th>
+                                <th>Distraction Time</th>
+                                <th>Absence Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Automatically Extracted via API -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

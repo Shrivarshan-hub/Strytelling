@@ -1,0 +1,10 @@
+opencv-python
+mediapipe
+psutil
+pywin32
+streamlit
+pandas
+plotly
+numpy
+flask
+flask
